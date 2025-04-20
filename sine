@@ -1,0 +1,49 @@
+#!/bin/bash
+
+read -p "Dammi il nome del file: " es
+
+# Verifica se il file esiste
+if [ ! -f "$es" ]; then
+    echo "Il file non esiste."
+    exit 1
+fi
+
+# Verifica se il file è in formato gbk
+if ! [[ "$es" == *.gbk ]]; then
+    echo "Il file non è in formato gbk."
+    exit 1
+fi
+
+# Output 1: Conta il numero di occorrenze di diverse tipologie di sequenze genetiche
+a="  cds  "
+b="  tRNA  "
+c="  ncRNA  "
+na=$(grep -o -i "$a" "$es" | wc -l)
+nb=$(grep -o -i "$b" "$es" | wc -l)
+nc=$(grep -o -i "$c" "$es" | wc -l)
+echo "Numero di $a > $na"
+echo "Numero di $b > $nb"
+echo "Numero di $c > $nc"
+
+
+# Output2: Estrae informazioni specifiche su geni, tipo di sequenza e locus
+
+
+c=$(grep "DEFINITION" "$es" | awk '{print substr($0, index($0, "str.") + 4, index($0, "substr.") - index($0, "str.") - 5)}')
+s=$(grep "DEFINITION" "$es" | awk '{print substr($0, index($0, "substr.") + 7)}')
+output="$c-$s.txt"
+{
+awk -F '[= "]' '
+BEGIN { printf("%-20s%-20s%-20s\n", "gene", "tipo", "locus") }
+/^ *gene/ { gene = $(NF-1); next }
+/^ *CDS/ { tipo = "CDS"; getline; gene = $(NF-1); getline; locus = $(NF-1); printf("%-20s%-20s%-20s\n", gene, tipo, locus) }
+/^ *tRNA/ { tipo = "tRNA"; getline; gene = $(NF-1); getline; locus = $(NF-1); printf("%-20s%-20s%-20s\n", gene, tipo, locus) }
+/^ *ncRNA/ { tipo = "ncRNA"; getline; gene = $(NF-1); getline; locus = $(NF-1); printf("%-20s%-20s%-20s\n", gene, tipo, locus) }
+' "$es"
+} > "$output"
+
+
+
+
+
+echo "Controlla la cartella per il file di output: $output"

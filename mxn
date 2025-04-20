@@ -1,0 +1,266 @@
+#!/bin/bash
+
+#			mxn esiste solo per salvare occasioinali versioni intermedie di sxn 
+
+#_____________________________modifiche ai normali cmd_____________________
+
+#____lista_____
+#    tput setaf 0: Nero
+#    tput setaf 1: Rosso
+#    tput setaf 2: Verde
+#    tput setaf 3: Giallo
+#    tput setaf 4: Blu
+#    tput setaf 5: Magenta (Rosa)
+#    tput setaf 6: Ciano
+#    tput setaf 7: Grigio chiaro
+#    tput setaf 8: Grigio scuro
+#    tput setaf 9: Rosso chiaro
+#    tput setaf 10: Verde chiaro
+#    tput setaf 11: Giallo chiaro
+#    tput setaf 12: Blu chiaro
+#    tput setaf 13: Magenta chiaro
+#    tput setaf 14: Ciano chiaro
+#    tput setaf 15: Bianco
+
+#cambio colori
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+pink=$(tput setaf 5)
+reset=$(tput sgr0)
+
+# Sovrascrive il comando echo con un ritardo
+echo() {
+	local delay=0.05  # Ritardo predefinito in secondi
+	local arg
+	for arg in "$@"; do
+		local i
+		for ((i = 0; i < ${#arg}; i++)); do
+			builtin echo -n "${arg:$i:1}"
+			sleep "$delay"
+		done
+	builtin echo  # Vai a capo alla fine
+	done
+}
+
+# Sovrascrive il comando printf con un ritardo
+printf() {
+	local delay=0.05  # Ritardo predefinito in secondi
+	local arg
+	for arg in "$@"; do
+		local i
+		for ((i = 0; i < ${#arg}; i++)); do
+			builtin printf "%s" "${arg:$i:1}"
+			sleep "$delay"
+		done
+	done
+}
+#______________________________________________________________________________
+#_______________________________PRORAMMA______________________________________
+#_______________________________________________________________________________
+echo " "
+printf "insert numerical administrator's key: " && read -s skip
+echo " "
+printf "the input is..."
+
+# Verifica se la key è un numero
+if [[ "$skip" =~ ^[0-9]+$ ]]
+then
+	echo " ${green}acceptable${reset}"
+else
+	echo " ${red}invalid..."
+	echo "program is shutting down.${reset}"
+	exit 1
+fi
+
+#verifica che la key sia corretta
+psw=160718
+if [ "$skip" -ne "$psw" ]
+then
+
+	echo "the inserted key is... ${red}wrong${reset}"
+	printf "skip dialogue? " && read -r dialogue
+	
+	#________________________usless dialogue________________________________
+	if [ "$dialogue" = "skip" ] || [ "$dialogue" = "yeah" ] || [ "$dialogue" = "yep" ] || [ "$dialogue" = "yes" ] || [ "$dialogue" = "yup" ] || [ "$dialogue" = 1 ] || [ "$dialogue" 		= "k" ] || [ "$dialogue" = "y" ]
+	then
+		echo "uffi..."
+		sleep 1
+		echo " "
+		printf "nvmd"
+		echo " "
+	else
+
+		#a stands for assitant
+		echo " "
+		printf "Hi, would you like to give me a name? " && read -r a
+		echo " "
+		printf "nice to meet you" && sleep 0.2 && printf "." && sleep 0.2 && printf "." && sleep 0.2 && printf "."
+		echo " "
+		printf "user's name: " && read -r user
+		echo "nice to meet you $user"
+		echo "I'm $a...."
+		echo "even though you already know... *giggles*"
+		printf "." && sleep 0.2 && printf "." && sleep 0.2 && printf "." && sleep 0.2 && printf "."
+		echo " "
+		echo "okay, let's get some shit done."
+		echo " "
+		printf "program $a is starting" && sleep 0.2 && printf "." && sleep 0.2 && printf "." && sleep 0.2 && printf "."
+		echo " "
+	fi
+
+	#____________________actual important program start__________________________
+	printf "insert file's name: " && read -r input
+	echo "oky, input taken"
+	sleep 1
+	echo " "
+	echo "the given file is: '$input'"
+	echo "we will verify:"
+	echo "1. correct arguments number?"
+	echo "2. does it even exist in the current dir?"
+	echo "3. correct file_type (.gbk)?"
+	echo " "
+	printf "wanna check it? " && read -r key
+
+	#____________________not allowing test -> ends program_____________________________
+	if [ "$key" = "no" ] || [ "$key" = "don't" ] || [ "$key" = "do not" ] || [ "$key" = "nup" ] || [ "$key" = "nope" ] || [ "$key" = 0 ] || [ "$key" = "nop" ] || [ "$key" = "nyo" 		] || [ "$key" = "n" ]
+	then
+		echo "that actually was a test" && sleep 0.2 && printf "." && sleep 0.2 && printf "." && sleep 0.2 && printf "."
+		sleep 1
+		echo  "and gueuss what?"
+		sleep 1
+		echo " "
+		printf "${red}y" && sleep 0.4 && printf "o" && sleep 0.4 && printf "u" && sleep 0.4 && printf " " && sleep 0.4 && printf "f" && sleep 0.4 && printf "a" && 			sleep 0.4 && printf "i" && sleep 0.4 && printf "l" && sleep 0.4 && printf "e" && sleep 0.4 && printf "d" && sleep 0.4 && printf ".${reset}"
+		echo " "
+		exit 1
+	fi
+
+	echo " "
+	printf "proceeding..."
+	echo " "
+
+	#_______________________checks del file se key è sbagliata__________________________
+	if [ ! -f "$input" ] || [ "$(echo "$input" | grep -c '\.gbk$')" -ne 1 ]
+	then
+
+		echo "${red}Sorry, at least one of them ddidn't match expectances"
+		echo " "
+		echo "terminating all operations"
+		echo "program $a is shutting down...... ${reset} "
+		exit 1
+	else
+		echo "1. arguments number.......... ${green}matched${reset}"
+		echo "2. existance.......... ${green}matched${reset}"
+		echo "3. file type .gbk........  ${green}matched${reset}"
+	fi
+
+	echo "${pink}now we have to prepare the #1 output"
+	echo "how many occurrences should we look for?${reset}"
+	printf "number of occurrences: " && read -r n
+
+	#______________________________first output: conta ricorrenze (cds - ncRNA - tRNA) _______
+	counter=1
+	for (( counter = 1; counter < n +1 ; counter++))
+	do
+		echo " "
+		printf "Insert #$counter occurrence: " && read -r "O_$counter"
+		echo " "
+
+		# Ottieni il valore della variabile O_$counter usando eval
+		O_value=$(eval echo " \$O_$counter ")
+
+		# Ottieni il numero di occorrenze di O_value nel file input
+		# NOTA: bisogna mettere spazio sennò conta anche le volte in cui l'input compare come parte di altro e non sè stesso e basta
+		num=$(grep -o -i "  $O_value  " "$input" | wc -l)
+		output="$O_value number -> $num"
+		echo "$O_value -> $output"
+		echo " "
+	done
+
+else
+	#________________________se key è giusta______________________
+	echo "the key is... ${green}correct${reset}"
+	a=Monika
+	u=Momo
+	echo "Hi $u, I'm ${pink}$a"
+	echo " "
+	printf "insert file's name: ${reset}" && read -r input
+	echo " "
+	echo "${pink}now we'll check it${reset}"
+
+	if [ ! -f "$input" ] || [ "$(echo "$input" | grep -c '\.gbk$')" -ne 1 ]
+	then
+
+		echo "${red}Sorry, at least one of them ddidn't match expectances"
+		echo " "
+		echo "terminating all operations"
+		echo "program ${pink}$a ${red}is shutting down...... ${reset} "
+		exit 1
+	else
+		echo "1. arguments number.......... ${green}matched${reset}"
+		echo "2. existance................. ${green}matched${reset}"
+		echo "3. file type '.gbk'.......... ${green}matched${reset}"
+	fi
+	echo
+
+	# first output
+	printf "skip the #1 output? " && read -r s
+	if [ "$s" = "no" ] || [ "$s" = "don't" ] || [ "$s" = "do not" ] || [ "$s" = "nup" ] || [ "$s" = "nope" ] || [ "$s" = 0 ] || [ "$s" = "nop" ] || [ "$s" = "nyo" ] || [ "$s" = "n" ]
+	then
+		echo "${pink}now we have to prepare the #1 output"
+		echo "how many occurrences should we look for?${reset}"
+		printf "number of occurrences: " && read -r n
+
+		#______________________________first output: conta ricorrenze (cds - ncRNA - tRNA) _______
+		counter=1
+		for (( counter = 1; counter < n +1 ; counter++))
+		do
+			echo " "
+			printf "Insert #$counter occurrence: " && read -r "O_$counter"
+			echo " "
+
+			# Ottieni il valore della variabile O_$counter usando eval
+			O_value=$(eval echo " \$O_$counter ")
+
+			# Ottieni il numero di occorrenze di O_value nel file input
+			# NOTA: bisogna mettere spazio sennò conta anche le volte in cui l'input compare come parte di altro e non sè stesso e basta
+			num=$(grep -o -i "  $O_value  " "$input" | wc -l)
+			output="$O_value number -> $num"
+			echo "$O_value -> $output"
+		done
+	printf "then "
+	fi
+fi
+
+#______________________________________________________________________________
+#_______________________________FROM HERE DOWN________________________________
+#______________________________________________________________________________
+# Estrai ceppo e sottoceppo dal nome del file
+ceppo=$(grep -m 1 " str." "$input" | sed 's/.*str="\([^"]*\)".*/\1/')
+sottoceppo=$(grep -m 1 " substr." "$input" | sed 's/.*str="\([^"]*\)".*/\1/')
+
+# Nome dei file di output per i tre tipi di geni
+output_CDS="${ceppo}_${sottoceppo}_CDS.txt"
+output_tRNA="${ceppo}_${sottoceppo}_tRNA.txt"
+output_ncRNA="${ceppo}_${sottoceppo}_ncRNA.txt"
+output_combined="${ceppo}_${sottoceppo}_combined.txt"
+
+# Intestazioni della tabella nei file di output
+echo "gene, tipo, locus" > "$output_CDS"
+echo "gene, tipo, locus" > "$output_tRNA"
+echo "gene, tipo, locus" > "$output_ncRNA"
+
+# Comando awk per estrarre informazioni sui geni e scrivere nei file di output corrispondenti
+awk '/^ *gene/ {gene = $2} /^ *CDS/ {printf "%s, CDS, %s\n", gene, $NF > "'"$output_CDS"'"} /^ *tRNA/ {printf "%s, tRNA, %s\n", gene, $NF > "'"$output_tRNA"'"} /^ *ncRNA/ {printf "%s, ncRNA, %s\n", gene, $NF > "'"$output_ncRNA"'"}' "track.gbk"
+
+# Combinazione dei tre file in un unico file di output
+paste -d '\n' "$output_CDS" "$output_tRNA" "$output_ncRNA" > "$output_combined"
+
+
+
+#_________________________EOF______________________________
+echo " "
+echo "all operations terminated"
+echo "check the current folder"
+echo "program ${pink}$a${reset} is shutting down...... ${pink}bye <3 ${reset}"
+exit 1
+#last line
