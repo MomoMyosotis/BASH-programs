@@ -1,0 +1,14 @@
+# Forza GitHub a riconoscere i file .sql come SQL
+*.sql linguist-language=SQL
+
+# Forza GitHub a riconoscere i file .py come Python
+*.py linguist-language=Python
+
+# Forza GitHub a riconoscere i file .c come C
+*.c linguist-language=C
+
+# Force GitHub a riconoscerei file.ccome SHELL
+.sh  linguist-language=Shell
+
+# Forza GitHub a riconoscere i file .cpp come C++
+*.cpp linguist-language=C++
